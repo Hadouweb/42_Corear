@@ -1,26 +1,25 @@
 #include "asm.h"
 
-t_cursor	*asm_create_cursor()
+t_cursor	*asm_create_cursor(void)
 {
 	t_cursor	*cursor;
 
-	cursor = (t_cursor*)malloc(sizeof(t_cursor));
+	cursor = (t_cursor*)ft_memalloc(sizeof(t_cursor));
 	if (cursor == NULL)
 		asm_put_error("Error : Malloc cursor");
-	cursor->line = 0;
+	cursor->line = 1;
 	cursor->col = 0;
 	return (cursor);
 }
 
 char		*asm_get_line(t_app *app, unsigned int n)
 {
-	unsigned int			num_line;
+	unsigned int	num_line;
+	t_node			*node_line;
 
-	t_node		*node_line;
 	node_line = app->lst_line;
-
-	num_line = 0;
-	while(node_line && num_line < n)
+	num_line = 1;
+	while (node_line && num_line < n)
 	{
 		node_line = node_line->next;
 		num_line++;
@@ -35,9 +34,9 @@ char		asm_get_char(char *line, unsigned int n)
 	unsigned int		num_char;
 
 	if (line == NULL)
-		return '\0';
+		return ('\0');
 	num_char = 0;
-	while(line[num_char] && num_char < n)
+	while (line[num_char] && num_char < n)
 	{
 		num_char++;
 	}

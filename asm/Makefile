@@ -5,6 +5,7 @@ PARSINGPATH = $(SRCPATH)/parsing
 READPATH = $(SRCPATH)/read
 UTILPATH = $(SRCPATH)/util
 INITPATH = $(SRCPATH)/init
+WRITEPATH = $(SRCPATH)/write
 
 INCPATH = ./includes
 
@@ -18,10 +19,15 @@ SRC = $(SRCPATH)/main.c\
 	  $(UTILPATH)/asm_util.c\
 	  $(UTILPATH)/asm_cursor.c\
 	  $(UTILPATH)/asm_strsplit.c\
+	  $(UTILPATH)/asm_debug.c\
+	  $(UTILPATH)/asm_push_data.c\
 	  $(READPATH)/asm_file.c\
-	  $(PARSINGPATH)/asm_parse_label.c\
+	  $(PARSINGPATH)/asm_check_cmd.c\
+	  $(PARSINGPATH)/asm_parse_cmd.c\
 	  $(PARSINGPATH)/asm_parsing.c\
-	  $(INITPATH)/asm_init_instr.c
+	  $(PARSINGPATH)/asm_parse_header.c\
+	  $(INITPATH)/asm_init_instr.c\
+	  $(WRITEPATH)/asm_write.c
 
 OBJ = $(SRC:.c=.o)
 

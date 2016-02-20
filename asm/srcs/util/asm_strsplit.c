@@ -44,7 +44,7 @@ static char	*asm_subtab(char const *s)
 
 	j = 0;
 	size_word = asm_strlen_split(s);
-	if ((str = (char *)malloc(size_word * sizeof(char) + 1)) == NULL)
+	if ((str = (char *)ft_memalloc(size_word * sizeof(char) + 1)) == NULL)
 		return (NULL);
 	while (j < size_word)
 		str[j++] = *s++;
@@ -62,7 +62,7 @@ char		**asm_strsplit(char const *s)
 	i = 0;
 	k = 0;
 	nb_word = asm_count_word(s);
-	if ((str = (char **)malloc(nb_word * sizeof(char *) + 1)) == NULL)
+	if ((str = (char **)ft_memalloc(nb_word * sizeof(char *) + 1)) == NULL)
 		return (NULL);
 	while (i < nb_word)
 	{

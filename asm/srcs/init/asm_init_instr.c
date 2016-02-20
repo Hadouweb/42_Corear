@@ -11,10 +11,10 @@ static t_size_p	asm_get_sp(int a, int b, int c, int d)
 	return (p);
 }
 
-static t_instr		asm_set_instr(char *name, unsigned char opcode,
+static t_instr	asm_set_instr(char *name, unsigned char opcode,
 	t_size_p sp, int b)
 {
-	t_instr 	instr;
+	t_instr		instr;
 
 	instr.name = name;
 	instr.opcode = opcode;
