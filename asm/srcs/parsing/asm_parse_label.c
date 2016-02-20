@@ -4,10 +4,10 @@ static t_label	*asm_create_label(char *str)
 {
 	t_label	*label;
 
-	if ((label = (t_label*)malloc(sizeof(t_label))) == NULL)
+	if ((label = (t_label*)ft_memalloc(sizeof(t_label))) == NULL)
 		asm_put_error("Error : Label not created");
 	label->name = str;
-	label->addr = 0;
+	label->pos = -1;
 	label->next = NULL;
 	return (label);
 }
@@ -46,7 +46,7 @@ int		asm_isalnum(char *str)
 	return (1);
 }
 
-void			asm_check_label(t_app *app, char *str)
+int			asm_check_label(t_app *app, char *str)
 {
 	int 	i;
 	char	**tab;
@@ -66,6 +66,7 @@ void			asm_check_label(t_app *app, char *str)
 			l = l->next;
 		}
 		asm_push_label(app, tab[0]);
+		return (1);
 	}
 	i = 0;
 	while (tab[i])
@@ -74,19 +75,20 @@ void			asm_check_label(t_app *app, char *str)
 			asm_put_error("Error : Syntax label");
 		i++;
 	}
+	return (0);
 }
 
 // en attente du header de David
-void			asm_save_label(t_app *app)
+/*void			asm_save_label(t_app *app)
 {
 	t_node	*l;
 
 	l = app->lst_line;
-	while (l && l->n_line < 2)
+	while (l && l->n_line < (int)app->cursor->line)
 		l = l->next;
 	while (l)
 	{
 		asm_check_label(app, l->line);
 		l = l->next;
 	}
-}
+}*/

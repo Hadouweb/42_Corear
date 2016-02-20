@@ -10,7 +10,7 @@ void	asm_set_cmd_param(t_btcode *bt, char *str)
 	i = 0;
 	while (tab[i])
 	{
-		bt->cmd->param[i].str = tab[i];
+		bt->cmd->param[i].str = ft_strdup(tab[i]);
 		if (tab[i][0] == '%')
 			s = 4;
 		else if (tab[i][0] == 'r')
@@ -21,6 +21,7 @@ void	asm_set_cmd_param(t_btcode *bt, char *str)
 		bt->cmd->param[i].hex = 0;
 		i++;
 	}
+	asm_free_tab(tab);
 }
 
 void	asm_set_real_param_size(t_cmd *cmd)
@@ -78,6 +79,33 @@ void	asm_set_cmd_instr(t_app *app, t_btcode *bt, char *str)
 		i++;
 	}
 	asm_put_error("Error : No valid instruction");
+}
+
+void	asm_set_encoding_byte(t_cmd *cmd)
+{
+	int				i;
+	unsigned char	mask_dir;
+	unsigned char	mask_ind;
+	unsigned char	mask_reg;
+
+	i = 0;
+	cmd->encoding = 0x00;
+	if (cmd->instr.is_encoding)
+	{
+		mask_dir = 0x80;
+		mask_ind = 0xc0;
+		mask_reg = 0x40;
+		while (i < 4)
+		{
+			if (cmd->param[i].size == 4)
+				cmd->encoding |= (mask_dir >> i * 2);
+			else if (cmd->param[i].size == 2)
+				cmd->encoding |= (mask_ind >> i * 2);
+			else if (cmd->param[i].size == 1)
+				cmd->encoding |= (mask_reg >> i * 2);
+			i++;
+		}
+	}
 }
 
 void	asm_set_cmd(t_app *app, char **tab, int i)

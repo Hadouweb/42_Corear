@@ -23,6 +23,8 @@ int		main(int ac, char **av)
 	asm_check_extension(&app, av);
 	asm_read_file(&app, av[1]);
 	asm_parse(&app);
+	asm_open_out_file(&app, av);
 	asm_write_data(&app);
+	//sleep(5);
 	return (0);
 }

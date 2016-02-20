@@ -88,7 +88,7 @@ typedef	struct		s_app
 	t_cursor		*cursor;
 	t_btcode 		*btcode;
 	struct s_instr	instr[16];
-	int 			byte_count;
+	unsigned int 	byte_count;
 }					t_app;
 
 void				asm_put_error(char *str);
@@ -135,5 +135,11 @@ t_btcode			*asm_create_bt(void);
 void				asm_push_bt(t_app *app, t_btcode *bt);
 void				asm_push_label(t_app *app, char *str);
 int					asm_read_directive(t_app *app);
+
+void				asm_free_tab(char **tab);
+void				asm_free_btcode(t_app *app);
+
+unsigned int		asm_reverse_uint(unsigned int n);
+void				asm_open_out_file(t_app *app, char **av);
 
 #endif

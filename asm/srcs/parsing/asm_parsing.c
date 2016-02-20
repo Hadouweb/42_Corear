@@ -4,6 +4,7 @@ void				asm_parse_header(t_app *app)
 {
 	char	c;
 
+	app->header.magic = asm_reverse_uint(COREWAR_EXEC_MAGIC);
 	while (1)
 	{
 		c = asm_read_char(app);
@@ -38,6 +39,7 @@ void				asm_save_cmd(t_app *app)
 		tab = asm_strsplit(l->line);
 		if (tab[0] && tab[0][0] != '\n')
 			asm_check_cmd(app, tab);
+		asm_free_tab(tab);
 		l = l->next;
 	}
 }

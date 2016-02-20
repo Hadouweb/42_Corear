@@ -58,8 +58,11 @@ static int	asm_check_label(t_app *app, char *str)
 	tab = asm_strsplit(str);
 	if (tab[0] && tab[0][ft_strlen(tab[0]) - 1] == ':')
 	{
-		if (asm_error_label(app, tab[0]))
+		if (asm_error_label(app, ft_strdup(tab[0])))
+		{
+			asm_free_tab(tab);
 			return (1);
+		}
 	}
 	i = 0;
 	while (tab[i])
@@ -68,6 +71,7 @@ static int	asm_check_label(t_app *app, char *str)
 			asm_put_error("Error : Syntax label");
 		i++;
 	}
+	asm_free_tab(tab);
 	return (0);
 }
 
