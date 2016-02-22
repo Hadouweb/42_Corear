@@ -14,7 +14,7 @@ int		asm_syntax2_param(char *str, char *tmp, int line)
 				asm_put_error_line(str, line);
 			i++;
 		}
-		else if (!ft_isalnum(tmp[1]))
+		else if (!ft_isalnum(tmp[1]) && tmp[1] != '-')
 			asm_put_error_line(str, line);
 	}
 	else if (tmp[0] == 'r')
@@ -36,8 +36,11 @@ int		asm_syntax_param(char **str, int line, t_btcode *btcode, int j)
 	tmp = *str;
 	token = 0;
 	i = asm_syntax2_param(*str, tmp, line);
-	while (tmp[i] && ft_isalnum(tmp[i]))
+	while (tmp[i] && (ft_isalnum(tmp[i]) || (tmp[i] == '-' && ++token)))
 		i++;
+	if (token > 1)
+		asm_put_error_line(*str, line);
+	token = 0;
 	asm_set_cmd_param(btcode, ft_strndup(*str, i), j);
 	while (tmp[i] && (tmp[i] == ' ' || tmp[i] == '\t'))
 		i++;
@@ -54,8 +57,9 @@ int		asm_syntax_param(char **str, int line, t_btcode *btcode, int j)
 
 int		asm_format_param(char *str, unsigned char format)
 {
-	if (str)
+	if (*str)
 	{
+		printf("%s %#x\n", str, format);
 		if (format & 0x01)
 			if (str[0] == 'r')
 				return (1);
@@ -118,13 +122,13 @@ void	asm_error_param(char **str, int line, t_btcode *btcode)
 	next_param = 0;
 	while (instr.type_param[i])
 	{
-		if (asm_format_param(tmp, instr.type_param[i]))
+		if (asm_format_param(*str, instr.type_param[i]))
 		{
 			next_param = asm_syntax_param(str, line, btcode, i);
 			*str += next_param;
 		}
 		else
-			asm_put_error_line(instr.name, line);
+			asm_put_error_line(*str, line);
 		i++;
 	}
 	asm_set_encoding_byte(btcode->cmd);
