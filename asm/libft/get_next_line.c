@@ -5,12 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nle-bret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/01 08:03:12 by nle-bret          #+#    #+#             */
-/*   Updated: 2016/02/01 08:03:14 by nle-bret         ###   ########.fr       */
+/*   Created: 2016/02/20 05:23:52 by nle-bret          #+#    #+#             */
+/*   Updated: 2016/02/20 05:26:22 by nle-bret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 static char		*ft_strcpy_limit(char *str, char n)
 {
@@ -107,7 +108,10 @@ int				get_next_line(int const fd, char **line)
 			return (1);
 	}
 	if (ret == 0 && lst->rest && (*line = ft_strdup(lst->rest)) != NULL)
+	{
 		ft_strdel(&lst->rest);
+		return (1);
+	}
 	if (ret == -1)
 		return (-1);
 	return (0);

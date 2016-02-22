@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   asm_parse_cmd.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlouise <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/02/21 11:36:52 by dlouise           #+#    #+#             */
+/*   Updated: 2016/02/21 18:13:58 by mfroehly         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "asm.h"
 
-void	asm_set_cmd_param(t_btcode *bt, char *str)
+static void	asm_set_cmd_param(t_btcode *bt, char *str)
 {
 	char	**tab;
 	int		i;
@@ -24,7 +36,7 @@ void	asm_set_cmd_param(t_btcode *bt, char *str)
 	asm_free_tab(tab);
 }
 
-void	asm_set_real_param_size(t_cmd *cmd)
+static void	asm_set_real_param_size(t_cmd *cmd)
 {
 	int		i;
 	int		s;
@@ -52,7 +64,7 @@ void	asm_set_real_param_size(t_cmd *cmd)
 	}
 }
 
-void	asm_set_cmd_instr(t_app *app, t_btcode *bt, char *str)
+static void	asm_set_cmd_instr(t_app *app, t_btcode *bt, char *str)
 {
 	int		i;
 	t_cmd	*c;
@@ -81,7 +93,7 @@ void	asm_set_cmd_instr(t_app *app, t_btcode *bt, char *str)
 	asm_put_error("Error : No valid instruction");
 }
 
-void	asm_set_encoding_byte(t_cmd *cmd)
+void		asm_set_encoding_byte(t_cmd *cmd)
 {
 	int				i;
 	unsigned char	mask_dir;
@@ -108,7 +120,7 @@ void	asm_set_encoding_byte(t_cmd *cmd)
 	}
 }
 
-void	asm_set_cmd(t_app *app, char **tab, int i)
+void		asm_set_cmd(t_app *app, char **tab, int i)
 {
 	t_btcode	*bt;
 	t_label		*l;

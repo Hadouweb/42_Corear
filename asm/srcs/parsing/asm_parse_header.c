@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   asm_parse_header.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlouise <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/02/21 11:36:55 by dlouise           #+#    #+#             */
+/*   Updated: 2016/02/21 23:36:49 by mfroehly         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "asm.h"
 
-void	asm_read_directive_value(t_app *app, char *dst_value, int length)
+static void	asm_read_directive_value(t_app *app, char *dst_value, int length,
+				char *name)
 {
 	int		i;
 	char	c;
@@ -11,8 +24,9 @@ void	asm_read_directive_value(t_app *app, char *dst_value, int length)
 		if (c == ' ' || c == '\t')
 			continue ;
 		if (c != '"')
-			asm_put_error(
-				"Error : directive value must begin with a quotation mark");
+			asm_put_error_str_int_int(
+				"Error : directive value must begin with a quotation mark ",
+				0, app->cursor->line, app->cursor->col);
 		break ;
 	}
 	c = asm_read_char(app);
@@ -24,28 +38,30 @@ void	asm_read_directive_value(t_app *app, char *dst_value, int length)
 		c = asm_read_char(app);
 	}
 	if (c != '"')
-		asm_put_error("Error : directive value is too long");
+		asm_put_error_str_int_int("Error : directive value is too long",
+			name, app->cursor->line, app->cursor->col);
 }
 
-void	asm_read_directive_name(t_app *app, char directive[8])
+static void	asm_read_directive_name(t_app *app, char directive[9])
 {
 	int		i;
 
 	i = 0;
 	directive[i] = asm_read_char(app);
-	while (directive[i] != ' ' && directive[i] != '\t' && i < 7)
+	while (ft_isalpha(directive[i]) && i < 7)
 	{
 		i++;
 		directive[i] = asm_read_char(app);
 	}
-	if ((directive[i] != ' ' && directive[i] != '\t')
-		|| (ft_strncmp(directive, "name", 4) != 0
-			&& (ft_strncmp(directive, "comment", 7) != 0)))
-		asm_put_error("Error : directive not expected");
+	if ((ft_strncmp(directive, NAME_CMD_STRING + 1, 4) != 0
+			&& (ft_strncmp(directive, COMMENT_CMD_STRING + 1, 7) != 0)))
+		asm_put_error_str_int_int("Error : directive not expected ", directive,
+			app->cursor->line, app->cursor->col - ft_strlen(directive) + 1);
 	directive[i] = '\0';
+	app->cursor->col--;
 }
 
-void	asm_check_after_directive(t_app *app)
+static void	asm_check_after_directive(t_app *app)
 {
 	char	c;
 
@@ -59,21 +75,25 @@ void	asm_check_after_directive(t_app *app)
 			c = asm_read_char(app);
 	}
 	if (c != '\n')
-		asm_put_error("Error : unexpected character after the directive");
+		asm_put_error_char_int_int("Error : unexpected character after the "
+				"directive", c, app->cursor->line, app->cursor->col);
 }
 
-int		asm_read_directive(t_app *app)
+int			asm_read_directive(t_app *app)
 {
-	char		directive_name[8];
+	char		directive_name[9];
 	static	int nb_directive = 0;
 
+	bzero(directive_name, 9);
 	if (nb_directive++ == 2)
-		asm_put_error("Error : too directives");
+		asm_put_error_line("Error : too directives ", app->cursor->line);
 	asm_read_directive_name(app, directive_name);
-	if (ft_strcmp(directive_name, "name") == 0)
-		asm_read_directive_value(app, app->header.prog_name, PROG_NAME_LENGTH);
-	if (ft_strcmp(directive_name, "comment") == 0)
-		asm_read_directive_value(app, app->header.comment, COMMENT_LENGTH);
+	if (ft_strcmp(directive_name, NAME_CMD_STRING + 1) == 0)
+		asm_read_directive_value(app, app->header.prog_name, PROG_NAME_LENGTH,
+				directive_name);
+	if (ft_strcmp(directive_name, COMMENT_CMD_STRING + 1) == 0)
+		asm_read_directive_value(app, app->header.comment, COMMENT_LENGTH,
+				directive_name);
 	asm_check_after_directive(app);
 	if (*app->header.prog_name && *app->header.comment)
 		return (1);

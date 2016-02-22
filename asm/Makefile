@@ -21,11 +21,15 @@ SRC = $(SRCPATH)/main.c\
 	  $(UTILPATH)/asm_strsplit.c\
 	  $(UTILPATH)/asm_debug.c\
 	  $(UTILPATH)/asm_push_data.c\
+	  $(UTILPATH)/asm_error.c\
+	  $(UTILPATH)/asm_success.c\
 	  $(READPATH)/asm_file.c\
+	  $(PARSINGPATH)/asm_check_line.c\
 	  $(PARSINGPATH)/asm_check_cmd.c\
 	  $(PARSINGPATH)/asm_parse_cmd.c\
 	  $(PARSINGPATH)/asm_parsing.c\
 	  $(PARSINGPATH)/asm_parse_header.c\
+	  $(PARSINGPATH)/asm_join_arg.c\
 	  $(INITPATH)/asm_init_instr.c\
 	  $(WRITEPATH)/asm_write.c
 
@@ -38,6 +42,31 @@ all : $(NAME)
 $(NAME) : $(OBJ)
 	@make -C $(LIBFT)
 	@$(CC) $(HEADER) $(LIB) -o $(NAME) $(OBJ)
+	@echo " "
+	@echo "   \033[33m                                         \033[043m        \033[0m"
+	@echo "   \033[33m                      \033[41m              \033[0m     \033[043m        \033[0m"
+	@echo "   \033[33m                    \033[41m                        \033[043m     \033[0m"
+	@echo "   \033[33m                    \033[100m        \033[43m     \033[0m\033[100m   \033[0m\033[43m   \033[0m  \033[100m        \033[0m"
+	@echo "   \033[33m                  \033[100m  \033[43m   \033[0m\033[100m   \033[0m\033[43m       \033[0m\033[100m   \033[0m\033[43m     \033[0m\033[100m        \033[0m"
+	@echo "   \033[33m                  \033[100m  \033[43m░░░\033[0m\033[100m      \033[0m\033[43m       \033[0m\033[100m   \033[0m\033[43m        \033[0m\033[100m  \033[0m"
+	@echo "   \033[33m                  \033[100m     \033[43m░░░░░░░░░░\033[0m\033[100m              \033[0m"
+	@echo "   \033[33m                       \033[43m░░░░░░░░░░░░░░░░░░\033[0m\033[100m   \033[0m"
+	@echo "   \033[33m             \033[100m             \033[41m   \033[0m\033[100m       \033[0m\033[41m   \033[0m\033[100m  \033[0m"
+	@echo "   \033[33m           \033[100m                  \033[41m   \033[0m\033[100m       \033[0m\033[41m  \033[0m     \033[100m  \033[0m"
+	@echo "   \033[33m         \033[043m    \033[0m\033[100m                \033[41m            \033[0m     \033[100m  \033[0m"
+	@echo "   \033[33m         \033[043m      \033[0m   \033[041m     \033[0m\033[100m   \033[41m      \033[0m\033[043m  \033[0m\033[041m     \033[0m\033[043m  \033[0m\033[041m   \033[0m\033[100m    \033[0m"
+	@echo "   \033[33m           \033[043m░░\033[0m  \033[100m   \033[0m\033[041m                          \033[0m\033[100m    \033[0m"
+	@echo "   \033[33m             \033[100m       \033[0m\033[041m                        \033[0m\033[100m    \033[0m"
+	@echo "   \033[33m           \033[100m       \033[0m\033[041m                  \033[0m"
+	@echo "   \033[33m           \033[100m  \033[0m     \033[041m          \033[0m"
+	@echo " "
+	@echo " "
+	@echo "\033[043m                                                              \033[0m"
+	@echo "\033[043m                         \033[030mC O R E W A R                        \033[0m"
+	@echo "\033[043m                           \033[035mTeam DAMN                          \033[0m"
+	@echo "\033[043m           \033[030mdlouise    atrupin    mfroehly    nle-bret         \033[0m"
+	@echo "\033[043m                                                              \033[0m"
+	@echo " "
 
 %.o: %.c
 	@$(CC) $(HEADER) -o $@ -c $<

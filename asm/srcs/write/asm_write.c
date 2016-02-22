@@ -6,7 +6,7 @@
 /*   By: mfroehly <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/19 07:33:14 by mfroehly          #+#    #+#             */
-/*   Updated: 2016/02/19 09:39:35 by mfroehly         ###   ########.fr       */
+/*   Updated: 2016/02/21 21:40:27 by mfroehly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,18 @@ static void		asm_set_label_dist(t_app *app, t_param *param, int pos)
 			}
 			l = l->next;
 		}
-		asm_put_error("Error : label not found");
+		asm_put_error_str("Error : label not found ", &param->str[2]);
 	}
 }
 
 void			asm_open_out_file(t_app *app, char **av)
 {
-	char	*path_out_file;
-
-	path_out_file = ft_strnew(ft_strlen(av[1]) + 3);
-	ft_strcpy(path_out_file, av[1]);
-	ft_strcpy(&path_out_file[ft_strlen(path_out_file) - 1], "cor");
-	app->fd = open(path_out_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	app->path_out_file = ft_strnew(ft_strlen(av[1]) + 3);
+	ft_strcpy(app->path_out_file, av[1]);
+	ft_strcpy(&app->path_out_file[ft_strlen(app->path_out_file) - 1], "cor");
+	app->fd = open(app->path_out_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (app->fd < 0)
-		asm_put_error("Error : out file");
-	ft_strdel(&path_out_file);
+		asm_put_error_str("Error : Can't open the file ", app->path_out_file);
 }
 
 void			asm_write_data(t_app *app)
@@ -82,7 +79,7 @@ void			asm_write_data(t_app *app)
 	int			i;
 
 	app->header.prog_size = asm_reverse_uint(app->byte_count);
-	write(app->fd, &app->header, sizeof(header_t));
+	write(app->fd, &app->header, sizeof(t_header));
 	pos = 0;
 	btcode = app->btcode;
 	while (btcode)
@@ -100,4 +97,6 @@ void			asm_write_data(t_app *app)
 		pos += btcode->cmd->cmd_size;
 		btcode = btcode->next;
 	}
+	asm_put_success("Writing output program to ", app->path_out_file);
+	ft_strdel(&app->path_out_file);
 }

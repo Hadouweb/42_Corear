@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   asm_file.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlouise <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/02/21 11:37:17 by dlouise           #+#    #+#             */
+/*   Updated: 2016/02/21 21:37:42 by mfroehly         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "asm.h"
 
 static t_node	*asm_create_line(char *str, int i)
@@ -12,7 +24,7 @@ static t_node	*asm_create_line(char *str, int i)
 	return (n);
 }
 
-void			asm_push_line(t_app *app, char *str, int i)
+static void		asm_push_line(t_app *app, char *str, int i)
 {
 	t_node	*l;
 
@@ -31,24 +43,17 @@ void			asm_read_file(t_app *app, char *name)
 {
 	char	*line;
 	int		i;
-	int		j;
 
 	i = 0;
 	if ((app->fd = open(name, O_RDONLY)) == -1)
-		asm_put_error("Error : Can't open the file");
+		asm_put_error_str("Error : Can't open the file ", name);
 	while ((app->ret = get_next_line(app->fd, &line)) > 0)
 	{
-		j = 0;
-		while (line[j])
-		{
-			if (line[j] == '#' || line[j] == ';')
-				line[j] = '\0';
-			j++;
-		}
 		asm_push_line(app, line, i);
 		i++;
 	}
 	if (app->ret == -1)
-		asm_put_error("Error : An error occured while reading the file");
+		asm_put_error_str("Error : An error occured while reading the file ",
+				name);
 	close(app->fd);
 }

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlouise <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/02/21 11:32:59 by dlouise           #+#    #+#             */
+/*   Updated: 2016/02/21 23:08:39 by mfroehly         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "asm.h"
 
-void	asm_init_app(t_app *app)
+static void	asm_init_app(t_app *app)
 {
 	app->byte_count = 0;
 	app->fd = -1;
@@ -10,10 +22,11 @@ void	asm_init_app(t_app *app)
 	app->btcode = NULL;
 	ft_bzero(&app->header, sizeof(app->header));
 	app->cursor = asm_create_cursor();
-	asm_init_instr(app);
+	//asm_init_instr(app);
+	asm_init_type_param(app);
 }
 
-int		main(int ac, char **av)
+int			main(int ac, char **av)
 {
 	t_app app;
 
@@ -25,6 +38,6 @@ int		main(int ac, char **av)
 	asm_parse(&app);
 	asm_open_out_file(&app, av);
 	asm_write_data(&app);
-	//sleep(5);
+	//sleep(10);
 	return (0);
 }

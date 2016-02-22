@@ -1,30 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnew.c                                        :+:      :+:    :+:   */
+/*   asm_succes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-bret <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mfroehly <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/24 15:21:53 by nle-bret          #+#    #+#             */
-/*   Updated: 2015/11/24 15:24:17 by nle-bret         ###   ########.fr       */
+/*   Created: 2016/02/21 18:29:19 by mfroehly          #+#    #+#             */
+/*   Updated: 2016/02/21 18:29:42 by mfroehly         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "asm.h"
 
-char	*ft_strnew(size_t size)
+void			asm_put_success(char *str1, char *str2)
 {
-	char	*str;
-	size_t	i;
-
-	i = 0;
-	if ((str = (char *)malloc(size * sizeof(char) + 1)) == NULL)
-		return (NULL);
-	while (i < size)
-	{
-		str[i] = '\0';
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
+	ft_putstr("\033[32m");
+	ft_putstr(str1);
+	ft_putstr(str2);
+	ft_putstr("\033[0m\n");
 }
