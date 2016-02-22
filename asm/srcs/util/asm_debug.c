@@ -50,6 +50,7 @@ void	asm_debug_btcode(t_app app)
 	int 		i;
 
 	bt = app.btcode;
+	printf("DEBUG\n\n");
 	while (bt)
 	{
 		i = 0;

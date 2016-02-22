@@ -42,7 +42,6 @@ void				asm_parse_header(t_app *app)
 void				asm_save_cmd(t_app *app)
 {
 	t_node		*l;
-	char		**tab;
 
 	l = app->lst_line;
 	while (l && l->n_line + 1 < (int)app->cursor->line)
@@ -50,10 +49,8 @@ void				asm_save_cmd(t_app *app)
 	while (l)
 	{
 		asm_check_line(app, l->line, l->n_line);
-		tab = asm_strsplit(l->line);
-		if (tab[0] && tab[0][0] != '\n')
-			asm_check_cmd(app, tab, l->n_line);
-		asm_free_tab(tab);
+		//asm_push_bt(app, bt);
+		//	asm_check_cmd(app, tab, l->n_line);
 		l = l->next;
 	}
 }
@@ -82,7 +79,7 @@ static unsigned int	asm_get_param_hex(t_param p)
 	return (hex);
 }
 
-static void			asm_set_param_hex(t_app *app)
+void			asm_set_param_hex(t_app *app)
 {
 	t_btcode	*bt;
 	int			i;
@@ -106,5 +103,5 @@ void				asm_parse(t_app *app)
 	asm_parse_header(app);
 	asm_delete_comment_after_header(app);
 	asm_save_cmd(app);
-	asm_set_param_hex(app);
+	//asm_set_param_hex(app);
 }

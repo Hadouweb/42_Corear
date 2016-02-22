@@ -76,8 +76,8 @@ typedef struct		s_btcode
 {
 	int				size_hex;
 	struct s_cmd	*cmd;
+	unsigned int	n_line;
 	struct s_btcode	*next;
-	unsigned int	num_line;
 }					t_btcode;
 
 typedef	struct		s_app
@@ -116,7 +116,6 @@ void				asm_join_arg(t_app *app, char **tab, int i);
 ** parsing/asm_parse_cmd.c
 */
 void				asm_set_cmd(t_app *app, char **tab, int i);
-void				asm_set_encoding_byte(t_cmd *cmd);
 
 /*
 ** parsing/asm_parse_header.c
@@ -144,7 +143,7 @@ char				**asm_strsplit(char const *s);
 ** util/asm_push_data.c
 */
 t_btcode			*asm_create_bt(void);
-void				asm_push_bt(t_app *app, t_btcode *bt);
+void				asm_push_bt(t_app *app, t_btcode *btcode);
 void				asm_push_label(t_app *app, char *str);
 
 /*
@@ -193,8 +192,16 @@ void				asm_delete_comment_after_header(t_app *app);
 void				asm_open_out_file(t_app *app, char **av);
 void				asm_write_data(t_app *app);
 
-void				asm_check_line(t_app *app, char *str, int line);
-
-
 void				asm_init_type_param(t_app *app);
+
+void				asm_check_line(t_app *app, char *str, int line);
+int					asm_error_instr(char **str, t_app *app, int line, t_btcode *bt);
+void				asm_error_label(char **str, t_app *app);
+void				asm_error_param(char **str, int line, t_btcode *btcode);
+t_instr				asm_get_instr(t_app *app, int i_instr);
+
+void				asm_set_cmd_instr(t_app *app, t_btcode *bt, int i_instr);
+void				asm_set_cmd_param(t_btcode *bt, char *str, int i);
+void				asm_set_encoding_byte(t_cmd *cmd);
+
 #endif

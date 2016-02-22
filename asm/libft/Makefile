@@ -68,6 +68,7 @@ SRC = ft_memset.c\
 	  ft_lsttotab.c\
 	  ft_tablen.c\
 	  ft_tabjoin.c\
+	  ft_strndup.c\
 	  get_next_line.c
 
 OBJ = $(SRC:.c=.o)

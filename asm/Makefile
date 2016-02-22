@@ -6,6 +6,8 @@ READPATH = $(SRCPATH)/read
 UTILPATH = $(SRCPATH)/util
 INITPATH = $(SRCPATH)/init
 WRITEPATH = $(SRCPATH)/write
+ERRORPATH = $(SRCPATH)/_error
+BTCODEPATH = $(SRCPATH)/_set_btcode
 
 INCPATH = ./includes
 
@@ -24,14 +26,15 @@ SRC = $(SRCPATH)/main.c\
 	  $(UTILPATH)/asm_error.c\
 	  $(UTILPATH)/asm_success.c\
 	  $(READPATH)/asm_file.c\
-	  $(PARSINGPATH)/asm_check_line.c\
-	  $(PARSINGPATH)/asm_check_cmd.c\
-	  $(PARSINGPATH)/asm_parse_cmd.c\
 	  $(PARSINGPATH)/asm_parsing.c\
 	  $(PARSINGPATH)/asm_parse_header.c\
-	  $(PARSINGPATH)/asm_join_arg.c\
 	  $(INITPATH)/asm_init_instr.c\
-	  $(WRITEPATH)/asm_write.c
+	  $(WRITEPATH)/asm_write.c\
+	  $(ERRORPATH)/asm_error.c\
+	  $(ERRORPATH)/asm_error_instr.c\
+	  $(ERRORPATH)/asm_error_label.c\
+	  $(ERRORPATH)/asm_error_param.c\
+	  $(BTCODEPATH)/asm_set_btcode.c\
 
 OBJ = $(SRC:.c=.o)
 

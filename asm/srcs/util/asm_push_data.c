@@ -20,23 +20,24 @@ t_btcode		*asm_create_bt(void)
 		asm_put_error("Error : Malloc CMD");
 	bt->size_hex = 0;
 	bt->cmd = NULL;
+	bt->n_line = 0;
 	bt->next = NULL;
 	return (bt);
 }
 
-void			asm_push_bt(t_app *app, t_btcode *bt)
+void			asm_push_bt(t_app *app, t_btcode *btcode)
 {
-	t_btcode *btcode;
+	t_btcode *bt;
 
-	btcode = app->btcode;
-	if (btcode == NULL)
+	bt = app->btcode;
+	if (bt)
 	{
-		app->btcode = bt;
-		return ;
+		while (bt->next)
+			bt = bt->next;
+		bt->next = btcode;
 	}
-	while (btcode->next)
-		btcode = btcode->next;
-	btcode->next = bt;
+	else
+		app->btcode = btcode;
 }
 
 static t_label	*asm_create_label(char *str)
