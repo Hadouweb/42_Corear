@@ -38,7 +38,7 @@ static t_instr	asm_set_instr(char *name, unsigned char opcode,
 	return (instr);
 }*/
 
-int			asm_get_type(int a, int b, int c, int d)
+/*int			asm_get_type(int a, int b, int c, int d)
 {
 	int		type_param[4];
 
@@ -47,7 +47,7 @@ int			asm_get_type(int a, int b, int c, int d)
 	type_param[2] = c;
 	type_param[3] = d;
 	return (1);
-}
+}*/
 
 void			asm_init_type_param(t_app *app)
 {
