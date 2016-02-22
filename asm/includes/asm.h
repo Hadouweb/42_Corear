@@ -203,5 +203,6 @@ t_instr				asm_get_instr(t_app *app, int i_instr);
 void				asm_set_cmd_instr(t_app *app, t_btcode *bt, int i_instr);
 void				asm_set_cmd_param(t_btcode *bt, char *str, int i);
 void				asm_set_encoding_byte(t_cmd *cmd);
+void				asm_set_real_param_size(t_cmd *cmd);
 
 #endif

@@ -69,6 +69,42 @@ int		asm_format_param(char *str, unsigned char format)
 	return (0);
 }
 
+unsigned int	asm_get_param_hex(t_param p)
+{
+	unsigned int	hex;
+
+	hex = 0x0;
+	if (p.str[0] == '%')
+	{
+		if (p.str[1] == ':')
+			hex = 0x0;
+		else
+			hex = ft_atoi(&p.str[1]);
+	}
+	else if (p.str[0] == 'r')
+	{
+		hex = ft_atoi(&p.str[1]);
+		if (hex > REG_NUMBER || hex < 1)
+			asm_put_error_line("Error : invalide register number ", hex);
+	}
+	else
+		hex = 0x0;
+	return (hex);
+}
+
+void			asm_set_param_hex(t_cmd *cmd)
+{
+	int			i;
+
+	i = 0;
+	while (i < 4)
+	{
+		if (cmd->param[i].size)
+			cmd->param[i].hex = asm_get_param_hex(cmd->param[i]);
+		i++;
+	}
+}
+
 void	asm_error_param(char **str, int line, t_btcode *btcode)
 {
 	int		i;
@@ -92,4 +128,5 @@ void	asm_error_param(char **str, int line, t_btcode *btcode)
 		i++;
 	}
 	asm_set_encoding_byte(btcode->cmd);
+	asm_set_param_hex(btcode->cmd);
 }

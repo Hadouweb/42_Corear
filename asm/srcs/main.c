@@ -38,8 +38,8 @@ int			main(int ac, char **av)
 	asm_parse(&app);
 	asm_open_out_file(&app, av);
 	asm_write_data(&app);
-	asm_debug_btcode(app);
-	asm_debug_label(app);
+	//asm_debug_btcode(app);
+	//asm_debug_label(app);
 	//sleep(10);
 	return (0);
 }

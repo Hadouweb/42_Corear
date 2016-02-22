@@ -1,5 +1,18 @@
 #include "asm.h"
 
+void	asm_update_label_pos(t_app *app)
+{
+	t_label	*l;
+
+	l = app->label;
+	while (l)
+	{
+		if (l->pos == -1)
+			l->pos = app->byte_count;
+		l = l->next;
+	}
+}
+
 void	asm_check_line(t_app *app, char *str, int line)
 {
 	int			i;
@@ -15,6 +28,7 @@ void	asm_check_line(t_app *app, char *str, int line)
 		asm_error_label(&str, app);
 		if (!*str)
 			return ;
+		asm_update_label_pos(app);
 		index_instr = asm_error_instr(&str, app, line, bt);
 		asm_error_param(&str, line, bt);
 		//printf("[%s] %d\n", str, line);
