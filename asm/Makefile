@@ -1,13 +1,11 @@
 CC = gcc -Werror -Wextra -Wall
 
 SRCPATH = ./srcs
-PARSINGPATH = $(SRCPATH)/parsing
-READPATH = $(SRCPATH)/read
 UTILPATH = $(SRCPATH)/util
-INITPATH = $(SRCPATH)/init
-WRITEPATH = $(SRCPATH)/write
-ERRORPATH = $(SRCPATH)/_error
-BTCODEPATH = $(SRCPATH)/_set_btcode
+SETDATA = $(SRCPATH)/set_data
+PRINT = $(SRCPATH)/print
+PARSING = $(SRCPATH)/parsing
+ERROR = $(SRCPATH)/error
 
 INCPATH = ./includes
 
@@ -19,22 +17,23 @@ LIB = $(LIBFT)/libft.a
 
 SRC = $(SRCPATH)/main.c\
 	  $(UTILPATH)/asm_util.c\
-	  $(UTILPATH)/asm_cursor.c\
-	  $(UTILPATH)/asm_strsplit.c\
 	  $(UTILPATH)/asm_debug.c\
-	  $(UTILPATH)/asm_push_data.c\
-	  $(UTILPATH)/asm_error.c\
-	  $(UTILPATH)/asm_success.c\
-	  $(READPATH)/asm_file.c\
-	  $(PARSINGPATH)/asm_parsing.c\
-	  $(PARSINGPATH)/asm_parse_header.c\
-	  $(INITPATH)/asm_init_instr.c\
-	  $(WRITEPATH)/asm_write.c\
-	  $(ERRORPATH)/asm_error.c\
-	  $(ERRORPATH)/asm_error_instr.c\
-	  $(ERRORPATH)/asm_error_label.c\
-	  $(ERRORPATH)/asm_error_param.c\
-	  $(BTCODEPATH)/asm_set_btcode.c\
+	  $(UTILPATH)/asm_cursor.c\
+	  $(SETDATA)/asm_set_btcode.c\
+	  $(SETDATA)/asm_read_file.c\
+	  $(SETDATA)/asm_push_data.c\
+	  $(SETDATA)/asm_init.c\
+	  $(PRINT)/asm_write.c\
+	  $(PRINT)/asm_print_success.c\
+	  $(PRINT)/asm_print_error.c\
+	  $(PARSING)/asm_parsing.c\
+	  $(PARSING)/asm_parsing_header.c\
+	  $(ERROR)/asm_util_error.c\
+	  $(ERROR)/asm_error_param.c\
+	  $(ERROR)/asm_error_param_syntax.c\
+	  $(ERROR)/asm_error_label.c\
+	  $(ERROR)/asm_error_instr.c\
+	  $(ERROR)/asm_error.c\
 
 OBJ = $(SRC:.c=.o)
 

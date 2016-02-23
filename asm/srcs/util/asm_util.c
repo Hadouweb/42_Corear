@@ -22,39 +22,6 @@ void			asm_check_extension(t_app *app, char **av)
 	app = (void*)app;
 }
 
-int				asm_isalnum(char *str)
-{
-	int i;
-
-	i = 0;
-	while (str[i] && str[i] != ':')
-	{
-		if (str[i] >= 'a' && str[i] <= 'z')
-			i++;
-		else if (str[i] == '_')
-			i++;
-		else if (str[i] >= '0' && str[i] <= '9')
-			i++;
-		else
-			return (0);
-	}
-	return (1);
-}
-
-void			asm_free_tab(char **tab)
-{
-	int		i;
-
-	i = 0;
-	while (tab[i])
-	{
-		ft_strdel(&tab[i]);
-		i++;
-	}
-	free(tab);
-	tab = NULL;
-}
-
 unsigned int	asm_reverse_uint(unsigned int n)
 {
 	unsigned char	*t;

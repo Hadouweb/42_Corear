@@ -12,20 +12,6 @@
 
 #include "asm.h"
 
-static void	asm_init_app(t_app *app)
-{
-	app->byte_count = 0;
-	app->fd = -1;
-	app->ret = -1;
-	app->lst_line = NULL;
-	app->label = NULL;
-	app->btcode = NULL;
-	ft_bzero(&app->header, sizeof(app->header));
-	app->cursor = asm_create_cursor();
-	//asm_init_instr(app);
-	asm_init_type_param(app);
-}
-
 int			main(int ac, char **av)
 {
 	t_app app;
