@@ -6,7 +6,7 @@
 /*   By: nle-bret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/23 07:14:11 by nle-bret          #+#    #+#             */
-/*   Updated: 2016/02/23 07:14:13 by nle-bret         ###   ########.fr       */
+/*   Updated: 2016/03/09 07:42:22 by dlouise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_btcode	*asm_create_bt(void)
 	t_btcode *bt;
 
 	if ((bt = (t_btcode *)ft_memalloc(sizeof(t_btcode))) == NULL)
-		asm_put_error("Error : Malloc CMD");
+		ERROR("Error : malloc btcode.\n");
 	bt->size_hex = 0;
 	bt->cmd = NULL;
 	bt->n_line = 0;
@@ -45,7 +45,7 @@ t_label		*asm_create_label(char *str)
 	t_label	*label;
 
 	if ((label = (t_label*)ft_memalloc(sizeof(t_label))) == NULL)
-		asm_put_error("Error : Label not created");
+		ERROR("Error : malloc new label.\n");
 	label->name = str;
 	label->pos = -1;
 	label->next = NULL;

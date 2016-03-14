@@ -7,30 +7,29 @@ PRINT = $(SRCPATH)/print
 PARSING = $(SRCPATH)/parsing
 ERROR = $(SRCPATH)/error
 
-INCPATH = ./includes
+LIBFT = ./../libft
+FTPRINTF = ./../ft_printf
 
-LIBFT = ./libft
+INCPATH = -I $(LIBFT)/includes -I $(FTPRINTF)/includes -I./includes
 
-HEADER = -I $(LIBFT)/includes -I $(INCPATH)
+HEADER = ./includes/asm.h ./includes/op.h
 
-LIB = $(LIBFT)/libft.a 
+LIB	= -L$(LIBFT) -lft -L$(FTPRINTF) -lftprintf -o $(NAME)
 
 SRC = $(SRCPATH)/main.c\
 	  $(UTILPATH)/asm_util.c\
-	  $(UTILPATH)/asm_debug.c\
 	  $(UTILPATH)/asm_cursor.c\
 	  $(SETDATA)/asm_set_btcode.c\
 	  $(SETDATA)/asm_read_file.c\
 	  $(SETDATA)/asm_push_data.c\
 	  $(SETDATA)/asm_init.c\
 	  $(PRINT)/asm_write.c\
-	  $(PRINT)/asm_print_success.c\
-	  $(PRINT)/asm_print_error.c\
 	  $(PARSING)/asm_parsing.c\
 	  $(PARSING)/asm_parsing_header.c\
 	  $(ERROR)/asm_util_error.c\
 	  $(ERROR)/asm_error_param.c\
 	  $(ERROR)/asm_error_param_syntax.c\
+	  $(ERROR)/asm_error_param_syntax_ind.c\
 	  $(ERROR)/asm_error_label.c\
 	  $(ERROR)/asm_error_instr.c\
 	  $(ERROR)/asm_error.c\
@@ -41,47 +40,43 @@ NAME = asm
 
 all : $(NAME)
 
-$(NAME) : $(OBJ)
-	@make -C $(LIBFT)
-	@$(CC) $(HEADER) $(LIB) -o $(NAME) $(OBJ)
-	@echo " "
-	@echo "   \033[33m                                         \033[043m        \033[0m"
-	@echo "   \033[33m                      \033[41m              \033[0m     \033[043m        \033[0m"
-	@echo "   \033[33m                    \033[41m                        \033[043m     \033[0m"
-	@echo "   \033[33m                    \033[100m        \033[43m     \033[0m\033[100m   \033[0m\033[43m   \033[0m  \033[100m        \033[0m"
-	@echo "   \033[33m                  \033[100m  \033[43m   \033[0m\033[100m   \033[0m\033[43m       \033[0m\033[100m   \033[0m\033[43m     \033[0m\033[100m        \033[0m"
-	@echo "   \033[33m                  \033[100m  \033[43m░░░\033[0m\033[100m      \033[0m\033[43m       \033[0m\033[100m   \033[0m\033[43m        \033[0m\033[100m  \033[0m"
-	@echo "   \033[33m                  \033[100m     \033[43m░░░░░░░░░░\033[0m\033[100m              \033[0m"
-	@echo "   \033[33m                       \033[43m░░░░░░░░░░░░░░░░░░\033[0m\033[100m   \033[0m"
-	@echo "   \033[33m             \033[100m             \033[41m   \033[0m\033[100m       \033[0m\033[41m   \033[0m\033[100m  \033[0m"
-	@echo "   \033[33m           \033[100m                  \033[41m   \033[0m\033[100m       \033[0m\033[41m  \033[0m     \033[100m  \033[0m"
-	@echo "   \033[33m         \033[043m    \033[0m\033[100m                \033[41m            \033[0m     \033[100m  \033[0m"
-	@echo "   \033[33m         \033[043m      \033[0m   \033[041m     \033[0m\033[100m   \033[41m      \033[0m\033[043m  \033[0m\033[041m     \033[0m\033[043m  \033[0m\033[041m   \033[0m\033[100m    \033[0m"
-	@echo "   \033[33m           \033[043m░░\033[0m  \033[100m   \033[0m\033[041m                          \033[0m\033[100m    \033[0m"
-	@echo "   \033[33m             \033[100m       \033[0m\033[041m                        \033[0m\033[100m    \033[0m"
-	@echo "   \033[33m           \033[100m       \033[0m\033[041m                  \033[0m"
-	@echo "   \033[33m           \033[100m  \033[0m     \033[041m          \033[0m"
-	@echo " "
-	@echo " "
-	@echo "\033[043m                                                              \033[0m"
-	@echo "\033[043m                         \033[030mC O R E W A R                        \033[0m"
-	@echo "\033[043m                           \033[035mTeam DAMN                          \033[0m"
-	@echo "\033[043m           \033[030mdlouise    atrupin    mfroehly    nle-bret         \033[0m"
-	@echo "\033[043m                                                              \033[0m"
-	@echo " "
+$(NAME) : make_general return
 
-%.o: %.c
-	@$(CC) $(HEADER) -o $@ -c $<
+return :
+	@echo ""
+
+make_general : make_libft make_ft_printf $(OBJ)
+	@$(CC) $(INCPATH) $(OBJ) $(LIB) -o $(NAME)
+
+make_libft:
+	@make -C $(LIBFT)
+
+make_ft_printf:
+	@make -C $(FTPRINTF)
+
+%.o: %.c $(HEADER)
+	@$(CC) $(INCPATH) -o $@ -c $<
 	@echo "\033[33m█\033[0m\c"
 
-clean : 
-	@make -C $(LIBFT) clean
-	rm -rf $(OBJ)
+clean :
+	@make -C $(LIBFT) fclean
+	@make -C $(FTPRINTF) fclean
+	@rm -rf $(OBJ)
+	@echo "Tout les .o de l'asm ont ete supprime."
 
 fclean : clean
 	@make -C $(LIBFT) fclean
+	@make -C $(FTPRINTF) fclean
 	@rm -rf $(NAME)
+	@echo "L'asm a ete supprime."
 
 re : fclean all
 
-.PHONY: all clean fclean re
+syscall : $(NAME)
+	@echo "Syscall asm :"
+	@nm $(NAME) | grep " U " | grep -v ___stack_chk_fail | grep -v ___stack_chk_guard | grep -v dyld_stub_binder | cut -f 19 -d ' ' | sed 's/^_/        /g'
+
+test : $(NAME)
+	@make -C test
+
+.PHONY: all clean fclean re test

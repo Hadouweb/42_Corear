@@ -6,7 +6,7 @@
 /*   By: dlouise <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 11:36:55 by dlouise           #+#    #+#             */
-/*   Updated: 2016/02/21 23:36:49 by mfroehly         ###   ########.fr       */
+/*   Updated: 2016/03/10 05:50:04 by dlouise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,8 @@ static void	asm_read_directive_value(t_app *app, char *dst_value, int length,
 		if (c == ' ' || c == '\t')
 			continue ;
 		if (c != '"')
-			asm_put_error_str_int_int(
-				"Error : directive value must begin with a quotation mark ",
-				0, app->cursor->line, app->cursor->col);
+			ERROR("Error : directive value must begin with a quotation mark,"
+				"line %d, col %d.\n", app->cursor->line, app->cursor->col);
 		break ;
 	}
 	c = asm_read_char(app);
@@ -38,8 +37,9 @@ static void	asm_read_directive_value(t_app *app, char *dst_value, int length,
 		c = asm_read_char(app);
 	}
 	if (c != '"')
-		asm_put_error_str_int_int("Error : directive value is too long",
-			name, app->cursor->line, app->cursor->col);
+		ERROR("Error : value of .%s directive \"%.20s...\" is too long, line "
+			"%d, col %d.\n", name, dst_value, app->cursor->line,
+			app->cursor->col);
 }
 
 static void	asm_read_directive_name(t_app *app, char directive[9])
@@ -55,8 +55,12 @@ static void	asm_read_directive_name(t_app *app, char directive[9])
 	}
 	if ((ft_strncmp(directive, NAME_CMD_STRING + 1, 4) != 0
 			&& (ft_strncmp(directive, COMMENT_CMD_STRING + 1, 7) != 0)))
-		asm_put_error_str_int_int("Error : directive not expected ", directive,
-			app->cursor->line, app->cursor->col - ft_strlen(directive) + 1);
+	{
+		directive[i] = '\0';
+		ERROR("Error : directive .%s not expected, line %d, col %d.\n",
+				directive,
+			app->cursor->line, app->cursor->col - ft_strlen(directive));
+	}
 	directive[i] = '\0';
 	app->cursor->col--;
 }
@@ -75,8 +79,9 @@ static void	asm_check_after_directive(t_app *app)
 			c = asm_read_char(app);
 	}
 	if (c != '\n')
-		asm_put_error_char_int_int("Error : unexpected character after the "
-				"directive", c, app->cursor->line, app->cursor->col);
+		ERROR("Error : unexpected character '%c' after the "
+				"directive, line %d, col %d.\n",
+				c, app->cursor->line, app->cursor->col);
 }
 
 int			asm_read_directive(t_app *app)
@@ -84,18 +89,26 @@ int			asm_read_directive(t_app *app)
 	char		directive_name[9];
 	static	int nb_directive = 0;
 
-	bzero(directive_name, 9);
+	ft_bzero(directive_name, 9);
 	if (nb_directive++ == 2)
-		asm_put_error_line("Error : too directives ", app->cursor->line);
+		ERROR("Error : too directives, line %d, col %d.\n",
+				app->cursor->line, app->cursor->col);
 	asm_read_directive_name(app, directive_name);
 	if (ft_strcmp(directive_name, NAME_CMD_STRING + 1) == 0)
+	{
 		asm_read_directive_value(app, app->header.prog_name, PROG_NAME_LENGTH,
 				directive_name);
+		app->directives_readed[PROG_NAME_READED] = 1;
+	}
 	if (ft_strcmp(directive_name, COMMENT_CMD_STRING + 1) == 0)
+	{
 		asm_read_directive_value(app, app->header.comment, COMMENT_LENGTH,
 				directive_name);
+		app->directives_readed[COMMENT_READED] = 1;
+	}
 	asm_check_after_directive(app);
-	if (*app->header.prog_name && *app->header.comment)
+	if (app->directives_readed[PROG_NAME_READED]
+		&& app->directives_readed[COMMENT_READED])
 		return (1);
 	return (0);
 }

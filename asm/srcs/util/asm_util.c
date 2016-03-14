@@ -6,7 +6,7 @@
 /*   By: dlouise <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 11:37:41 by dlouise           #+#    #+#             */
-/*   Updated: 2016/02/21 21:30:55 by mfroehly         ###   ########.fr       */
+/*   Updated: 2016/03/12 04:59:35 by dlouise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void			asm_check_extension(t_app *app, char **av)
 
 	len = ft_strlen(av[1]);
 	if (len < 2 || av[1][len - 1] != 's' || av[1][len - 2] != '.')
-		asm_put_error("Error : Bad file type");
+		ERROR("Error : bad file type.\n");
 	app = (void*)app;
 }
 
@@ -56,4 +56,33 @@ void			asm_delete_comment_after_header(t_app *app)
 		num_line++;
 		line = line->next;
 	}
+}
+
+int				ft_atoi2(const char *nptr)
+{
+	size_t	i;
+	int		res;
+	char	neg;
+
+	neg = 0;
+	res = 0;
+	i = 0;
+	while (' ' == nptr[i] || '\t' == nptr[i] || '\f' == nptr[i]
+		|| '\v' == nptr[i] || '\r' == nptr[i] || '\n' == nptr[i])
+		i++;
+	if ('-' == nptr[i])
+	{
+		neg = 1;
+		i++;
+	}
+	else if ('+' == nptr[i])
+		i++;
+	while ('0' <= nptr[i] && '9' >= nptr[i])
+	{
+		if (res > (res * 10) + nptr[i] - '0')
+			return (-1);
+		res = (res * 10) + nptr[i++] - '0';
+	}
+	res = (neg ? -res : res);
+	return (res);
 }

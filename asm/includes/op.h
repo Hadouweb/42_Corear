@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2016/02/20 07:17:55 by mfroehly         ###   ########.fr       */
+/*   Updated: 2016/03/09 23:49:00 by dlouise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # define NAME_CMD_STRING		".name"
 # define COMMENT_CMD_STRING		".comment"
 
-# define REG_NUMBER				99
+# define REG_NUMBER				16
 
 # define CYCLE_TO_DIE			1536
 # define CYCLE_DELTA			50
@@ -58,6 +58,9 @@ typedef char					t_arg_type;
 # define PROG_NAME_LENGTH		(128)
 # define COMMENT_LENGTH			(2048)
 # define COREWAR_EXEC_MAGIC		0xea83f3
+
+# define PROG_NAME_READED		0
+# define COMMENT_READED			1
 
 typedef struct					s_header
 {

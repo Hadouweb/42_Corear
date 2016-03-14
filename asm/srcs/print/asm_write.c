@@ -6,7 +6,7 @@
 /*   By: mfroehly <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/19 07:33:14 by mfroehly          #+#    #+#             */
-/*   Updated: 2016/02/21 21:40:27 by mfroehly         ###   ########.fr       */
+/*   Updated: 2016/03/10 05:54:58 by dlouise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,29 +47,30 @@ static void		asm_set_label_dist(t_app *app, t_param *param, int pos)
 	t_label		*l;
 
 	l = app->label;
-	if (param->str[0] == '%' && param->str[1] == ':')
+	if ((param->str[0] == '%' && param->str[1] == ':') || param->str[0] == ':')
 	{
 		while (l)
 		{
-			if (asm_strcmp_label(&param->str[2], l->name) == 0)
+			if (asm_strcmp_label(&param->str[(param->str[0] == '%') ? 2 : 1],
+						l->name) == 0)
 			{
 				param->hex = l->pos - pos;
 				return ;
 			}
 			l = l->next;
 		}
-		asm_put_error_str("Error : label not found ", &param->str[2]);
+		ERROR("Error : label %s not found.\n", &param->str[2]);
 	}
 }
 
 void			asm_open_out_file(t_app *app, char **av)
 {
-	app->path_out_file = ft_strnew(ft_strlen(av[1]) + 3);
-	ft_strcpy(app->path_out_file, av[1]);
-	ft_strcpy(&app->path_out_file[ft_strlen(app->path_out_file) - 1], "cor");
-	app->fd = open(app->path_out_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	app->path_of = ft_strnew(ft_strlen(av[1]) + 3);
+	ft_strcpy(app->path_of, av[1]);
+	ft_strcpy(&app->path_of[ft_strlen(app->path_of) - 1], "cor");
+	app->fd = open(app->path_of, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (app->fd < 0)
-		asm_put_error_str("Error : Can't open the file ", app->path_out_file);
+		ERROR("Error : can't open the file \"%s\".\n", app->path_of);
 }
 
 void			asm_write_data(t_app *app)
@@ -97,6 +98,6 @@ void			asm_write_data(t_app *app)
 		pos += btcode->cmd->cmd_size;
 		btcode = btcode->next;
 	}
-	asm_put_success("Writing output program to ", app->path_out_file);
-	ft_strdel(&app->path_out_file);
+	ft_printf("\033[32mWriting output program to %s\033[0m\n", app->path_of);
+	ft_strdel(&app->path_of);
 }

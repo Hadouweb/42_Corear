@@ -6,13 +6,13 @@
 /*   By: nle-bret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/23 07:26:11 by nle-bret          #+#    #+#             */
-/*   Updated: 2016/02/23 07:26:14 by nle-bret         ###   ########.fr       */
+/*   Updated: 2016/03/12 04:55:21 by dlouise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-int		asm_dodge_space_tab(char *str)
+int				asm_dodge_space_tab(char *str)
 {
 	int		i;
 
@@ -22,7 +22,7 @@ int		asm_dodge_space_tab(char *str)
 	return (i);
 }
 
-void	asm_update_label_pos(t_app *app)
+void			asm_update_label_pos(t_app *app)
 {
 	t_label	*l;
 
@@ -35,7 +35,7 @@ void	asm_update_label_pos(t_app *app)
 	}
 }
 
-int		asm_param_is_number(char *str)
+int				asm_param_is_number(char *str)
 {
 	if (*str)
 	{
@@ -63,14 +63,14 @@ unsigned int	asm_get_param_hex(t_param p)
 	{
 		hex = ft_atoi(&p.str[1]);
 		if (hex > REG_NUMBER || hex < 1)
-			asm_put_error_line("Error : invalide register number ", hex);
+			ERROR("Error : the r%d register does not exist.\n", hex);
 	}
 	else if (asm_param_is_number(p.str))
-		hex = ft_atoi(p.str);
+		hex = ft_atoi2(p.str);
 	return (hex);
 }
 
-int		asm_is_label_char(char c)
+int				asm_is_label_char(char c)
 {
 	int			i;
 	const char	lb[] = LABEL_CHARS;

@@ -6,7 +6,7 @@
 /*   By: nle-bret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/23 07:25:37 by nle-bret          #+#    #+#             */
-/*   Updated: 2016/02/23 07:25:38 by nle-bret         ###   ########.fr       */
+/*   Updated: 2016/03/09 08:29:44 by dlouise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int		asm_error_instr_exist(t_app *app, char *instr, int line)
 			return (i);
 		i++;
 	}
-	asm_put_error_line(instr, line);
+	ERROR("Error : the instruction \"%s\" does not exist, line %d.\n",
+			instr, line);
 	return (i);
 }
 

@@ -6,7 +6,7 @@
 /*   By: nle-bret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/23 07:25:29 by nle-bret          #+#    #+#             */
-/*   Updated: 2016/02/23 07:25:31 by nle-bret         ###   ########.fr       */
+/*   Updated: 2016/03/09 09:49:32 by dlouise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,29 @@
 
 void	asm_check_line(t_app *app, char *str, int line)
 {
-	int			i;
 	t_btcode	*bt;
 
-	i = 0;
 	bt = asm_create_bt();
+	bt->n_line = line;
 	str += asm_dodge_space_tab(str);
-	if (*str)
+	if (!*str)
 	{
-		asm_error_label(&str, app);
-		asm_update_label_pos(app);
-		if (!*str)
-			return ;
-		asm_error_instr(&str, app, line, bt);
-		asm_error_param(&str, line, bt);
-		if (*str)
-			asm_put_error_line(str, line);
-		asm_push_bt(app, bt);
-		app->byte_count += bt->cmd->cmd_size;
+		free(bt);
+		return ;
 	}
+	asm_error_label(&str, app, line);
+	asm_update_label_pos(app);
+	if (!*str)
+	{
+		free(bt);
+		return ;
+	}
+	asm_error_instr(&str, app, line, bt);
+	asm_error_param(&str, line, bt);
+	if (*str)
+		ERROR("Error : too many parameters, line %d.\n", line);
+	asm_push_bt(app, bt);
+	app->byte_count += bt->cmd->cmd_size;
 }
 
 t_instr	asm_get_instr(t_app *app, int i_instr)

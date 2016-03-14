@@ -6,7 +6,7 @@
 /*   By: nle-bret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/23 07:14:37 by nle-bret          #+#    #+#             */
-/*   Updated: 2016/02/23 07:14:40 by nle-bret         ###   ########.fr       */
+/*   Updated: 2016/03/09 07:46:07 by dlouise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static t_node	*asm_create_line(char *str, int i)
 	t_node	*n;
 
 	if ((n = (t_node*)ft_memalloc(sizeof(t_node))) == NULL)
-		asm_put_error("Error : Node not created");
+		ERROR("Error : malloc node.\n");
 	n->next = NULL;
 	n->line = str;
 	n->n_line = i;
@@ -46,14 +46,14 @@ void			asm_read_file(t_app *app, char *name)
 
 	i = 0;
 	if ((app->fd = open(name, O_RDONLY)) == -1)
-		asm_put_error_str("Error : Can't open the file ", name);
+		ERROR("Error : can't open the file \"%s\".\n", name);
 	while ((app->ret = get_next_line(app->fd, &line)) > 0)
 	{
 		asm_push_line(app, line, i);
 		i++;
 	}
 	if (app->ret == -1)
-		asm_put_error_str("Error : An error occured while reading the file ",
+		ERROR("Error : an error occured while reading the file \"%s\".\n",
 				name);
 	close(app->fd);
 }

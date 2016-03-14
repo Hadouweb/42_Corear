@@ -6,7 +6,7 @@
 /*   By: atrupin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 02:46:43 by atrupin           #+#    #+#             */
-/*   Updated: 2016/02/21 23:40:08 by mfroehly         ###   ########.fr       */
+/*   Updated: 2016/03/12 22:03:04 by atrupin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 
 # include <stdlib.h>
 # include <libft.h>
+# include <ft_printf.h>
 # include <fcntl.h>
 # include "op.h"
-# include <stdio.h>
 
 typedef struct		s_cursor
 {
@@ -50,7 +50,7 @@ typedef struct		s_size_p
 
 typedef struct		s_instr
 {
-	char			*name;
+	char			name[6];
 	unsigned char	opcode;
 	int				nbr_octet[4];
 	unsigned char	type_param[4];
@@ -89,10 +89,13 @@ typedef	struct		s_app
 	t_header		header;
 	t_cursor		*cursor;
 	t_btcode		*btcode;
-	const t_instr	*instr;
+	t_instr			instr[16];
 	unsigned int	byte_count;
-	char			*path_out_file;
+	char			*path_of;
+	int				directives_readed[2];
 }					t_app;
+
+# define ERROR(fmt,...)(ft_printf("\033[31m"fmt"\033[0m",##__VA_ARGS__),exit(1))
 
 /*
 **	Path : srcs/util/asm_util.c
@@ -159,24 +162,6 @@ void				asm_open_out_file(t_app *app, char **av);
 void				asm_write_data(t_app *app);
 
 /*
-**	Path : srcs/print/asm_print_success.c
-**	Role : Print success message
-*/
-void				asm_put_success(char *str1, char *str2);
-
-/*
-**	Path : srcs/print/asm_print_error.c
-**	Role : Print error message
-*/
-void				asm_put_error(char *str);
-void				asm_put_error_line(char *str, int line);
-void				asm_put_error_str(char *str1, char *str2);
-void				asm_put_error_char_int_int(char *str, char c,
-						int line, int col);
-void				asm_put_error_str_int_int(char *str1, char *str2,
-						int line, int col);
-
-/*
 **	Path : srcs/parsing/asm_parsing_header.c
 **	Role : Parsing header
 */
@@ -201,9 +186,9 @@ unsigned int		asm_get_param_hex(t_param p);
 void				asm_set_param_hex(t_cmd *cmd);
 void				asm_error_param(char **str, int line,
 						t_btcode *btcode);
-
+int					asm_syntax_param_ind(char *str, int line);
 int					asm_is_label_char(char c);
-void				asm_error_label(char **str, t_app *app);
+void				asm_error_label(char **str, t_app *app, int line);
 
 int					asm_error_instr_exist(t_app *app, char *instr, int line);
 void				asm_error_instr(char **str, t_app *app, int line,
@@ -220,6 +205,7 @@ int					asm_param_is_number(char *str);
 int					asm_syntax_param_reg(char *str, int line);
 int					asm_syntax_param_dir(char *str, int line);
 int					asm_syntax_param_ind(char *str, int line);
-int					asm_syntax_param(char **str, t_btcode *btcode, int j, int f);
+int					asm_syntax_param(char **s, t_btcode *btcode, int j, int f);
+int					ft_atoi2(const char *str);
 
 #endif

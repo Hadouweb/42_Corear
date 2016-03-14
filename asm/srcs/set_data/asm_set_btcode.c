@@ -6,7 +6,7 @@
 /*   By: nle-bret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/23 07:14:57 by nle-bret          #+#    #+#             */
-/*   Updated: 2016/02/23 07:14:59 by nle-bret         ###   ########.fr       */
+/*   Updated: 2016/03/11 09:02:13 by dlouise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	asm_set_real_param_size(t_cmd *cmd)
 		if (cmd->param[i].str)
 		{
 			if (cmd->param[i].str[0] == '%')
-				s = (cmd->param[i].str[1] == ':') ? 2 : 4;
+				s = 4;
 			else if (cmd->param[i].str[0] == 'r')
 				s = 1;
 			else
@@ -102,10 +102,10 @@ void	asm_set_cmd_instr(t_app *app, t_btcode *bt, int i_instr)
 	t_cmd	*c;
 
 	if ((c = (t_cmd *)ft_memalloc(sizeof(t_cmd))) == NULL)
-		asm_put_error("Error : Malloc CMD");
+		ERROR("Error : malloc cmd.\n");
 	bt->cmd = c;
 	bt->cmd->cmd_size = 1;
-	bt->cmd->instr.name = app->instr[i_instr].name;
+	ft_strcpy(bt->cmd->instr.name, app->instr[i_instr].name);
 	bt->cmd->instr.opcode = app->instr[i_instr].opcode;
 	bt->cmd->instr.nbr_octet[0] = app->instr[i_instr].nbr_octet[0];
 	bt->cmd->instr.nbr_octet[1] = app->instr[i_instr].nbr_octet[1];
