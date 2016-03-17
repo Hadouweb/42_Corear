@@ -6,7 +6,7 @@
 /*   By: dlouise <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 11:37:23 by dlouise           #+#    #+#             */
-/*   Updated: 2016/02/21 18:34:49 by mfroehly         ###   ########.fr       */
+/*   Updated: 2016/03/09 07:35:35 by dlouise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_cursor	*asm_create_cursor(void)
 
 	cursor = (t_cursor*)ft_memalloc(sizeof(t_cursor));
 	if (cursor == NULL)
-		asm_put_error("Error : Malloc cursor");
+		ERROR("Error : malloc cursor.\n");
 	cursor->line = 1;
 	cursor->col = 0;
 	return (cursor);
